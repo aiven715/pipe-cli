@@ -1,0 +1,24 @@
+input:
+  - email
+  - password
+
+modules:
+  - name: ping
+    input:
+      - foo
+    type: http
+    url: "{{ env.API_URL }}/sign-up"
+
+tasks:
+  - name: sign_up
+    type: http
+    url: "{{ env.API_URL }}/sign-up"
+    output:
+      token: "response.body.token"
+  - name: ping_1
+    module: ping
+    input:
+      foo: bar
+
+output:
+  user_id: "{{ tasks.signup.user_id }}"

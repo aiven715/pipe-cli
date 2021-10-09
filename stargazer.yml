@@ -1,0 +1,16 @@
+tasks:
+  - name: stargazers
+    type: http
+    url: "https://api.github.com/repos/rust-lang/rust/stargazers"
+    method: "GET"
+    output:
+      first_stargazer_repos_url: "response.body[0].repos_url"
+  - name: repos
+    type: http
+    url: "{{ tasks.stargazers.first_stargazer_repos_url }}"
+    method: "GET"
+    output:
+      first_repo_name: "response.body[0].name"
+
+output:
+  first_repo_name: "{{ tasks.first_repo_name }}"
