@@ -1,4 +1,6 @@
 use crate::tasks::{Http, Task};
+use crate::State;
+// use regex::Regex;
 use std::fs;
 // TODO: migrate to serde yaml
 use yaml_rust::{Yaml, YamlLoader};
@@ -46,6 +48,37 @@ impl Spec {
             None => panic!("'tasks' field is missing"),
         }
     }
+}
+
+pub struct Slice<'a> {
+    yaml: &'a Yaml,
+    state: &'a State,
+}
+
+impl<'a> Slice<'a> {
+    pub fn new(yaml: &'a Yaml, state: &'a State) -> Self {
+        Self { yaml, state }
+    }
+
+    pub fn get(&self, key: &str) -> Self {
+        Self {
+            yaml: &self.yaml[key],
+            state: self.state,
+        }
+    }
+
+    pub fn as_str(&self, key: &str) -> Option<&str> {
+        self.yaml[key].as_str().map(|value| {
+            ();
+            value
+        })
+    }
+
+    //     fn substitute(&self, text: &str) -> &str {
+    //         let re = Regex::new(r"(\{\{.+\}\})").unwrap();
+
+    //         re.replace_all(text, |captured| "")
+    //     }
 }
 
 pub enum SpecError {

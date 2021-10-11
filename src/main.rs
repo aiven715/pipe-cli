@@ -24,7 +24,7 @@ fn main() {
         .get_matches();
 
     let filename = matches.value_of("file").unwrap();
-    let mut state = State::new();
+    let state = State::new();
 
     match Spec::try_new(filename) {
         Ok(spec) => {
